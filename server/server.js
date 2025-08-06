@@ -1,7 +1,10 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import connectDb from './config/db.js'
 
 const app = express();
+connectDb();
+
 app.use(express.json());
 
 
