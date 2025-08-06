@@ -43,15 +43,32 @@ app.post("/user/signup", async (req, res) => {
 
 app.post("/user/login", async (req, res) => {
   try {
-    const user = req.body;
-    //checking if email exist or not
-    if (!(await User.findOne(user.email))) {
-      res.status(400).send("user doesn't exist check your mail");
+    const { email, password } = req.body;
+
+    // Check first if user exists in the database or not 
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      return res.status(400).send("User doesn't exist. Check your email.");
     }
 
-    const userPassword = user.password;
-    
-  } catch (error) {}
+    // Comparing user password password with frontend password
+    const isMatch = await bcrypt.compare(password, existingUser.password);
+    if (!isMatch) {
+      return res.status(401).send("Invalid credentials. Check your password.");
+    }
+
+    // Generate JWT token for cookie pareser to check 
+    const token = jwt.sign(
+      { userId: existingUser._id, email: existingUser.email },
+      process.env.SECRET_KEY, 
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).send("Login Successfull !!")
+
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong", error: error.message });
+  }
 });
 
 const port = 3000;
