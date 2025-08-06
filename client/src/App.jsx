@@ -1,14 +1,15 @@
-import './App.css'
-import './index.css'
+import React from "react";
 
-import AuthForms from './components/userAuth/AuthForms'
+import AuthForms from "./components/userAuth/AuthForms";
+// import Homepage from "./components/home/HomePage";
 
-function App() {
+const App = () => {
   return (
-    <>
-     <AuthForms/>
-    </>
-  )
-}
+    <div>
+      <AuthForms />
+      {/* <Homepage /> */}
+    </div>
+  );
+};
 
-export default App
+export default App;

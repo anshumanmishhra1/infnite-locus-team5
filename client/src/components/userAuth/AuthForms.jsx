@@ -36,7 +36,7 @@ const handleSubmit = async () => {
       : 'http://localhost:3000/user/login';
 
     const response = await axios.post(url, formData, { withCredentials: true });
-    console.log(response);
+    // console.log(response)
     if (!isSignUp) alert('Sign in successful!');
     setMessage(response.data.message || 'Success');
     console.log(response.data);
