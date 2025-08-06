@@ -19,46 +19,37 @@ export default function AuthForms() {
     });
   };
 
-  const handleSubmit = async () => {
-    if (!formData.email || !formData.password) {
-      alert('Please fill in email and password');
-      return;
-    }
+const handleSubmit = async () => {
+  if (!formData.email || !formData.password) {
+    alert('Please fill in email and password');
+    return;
+  }
 
-    if (isSignUp && (!formData.name || !formData.age)) {
-      alert('Please fill in all required fields');
-      return;
-    }
+  if (isSignUp && (!formData.name || !formData.age)) {
+    alert('Please fill in all required fields');
+    return;
+  }
 
-    if (isSignUp) {
-      // signup
-      console.log(formData)
-      try {
-        const response = await axios.post('url', { formData });
-        console.log(response);
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          setMessage(error.response.data.message);
-        } else {
-          setMessage("Error sending data");
-        }
-        console.error(error);
-      }
+  try {
+    const url = isSignUp
+      ? 'http://localhost:3000/user/signup'
+      : 'http://localhost:3000/user/login';
+
+    const response = await axios.post(url, formData, { withCredentials: true });
+    console.log(response);
+    if (!isSignUp) alert('Sign in successful!');
+    setMessage(response.data.message || 'Success');
+    console.log(response.data);
+  } catch (error) {
+    if (error.response?.data?.message) {
+      setMessage(error.response.data.message);
     } else {
-      try {
-        // signin
-        const response = await axios.post('url', { formData });
-        console.log(response);
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          setMessage(error.response.data.message);
-        } else {
-          setMessage("Error sending data");
-        }
-        console.error(error);
-      } alert('Sign in successful! Check console for data.');
+      setMessage("Network error or server not responding");
     }
-  };
+    console.error(error);
+  }
+};
+
 
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
