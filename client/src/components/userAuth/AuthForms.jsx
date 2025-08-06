@@ -167,6 +167,7 @@ export default function AuthForms() {
               >
                 {isSignUp ? 'Create Account' : 'Sign In'}
               </button>
+              <p className='text-md text-green-700'>{Message}</p>
             </div>
 
             <div className="mt-8 text-center">
