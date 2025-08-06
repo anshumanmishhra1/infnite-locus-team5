@@ -7,6 +7,11 @@ connectDb();
 
 app.use(express.json());
 
+app.post('/signup',async (req,res)=>{
+    const user = req.body;
+    console.log(user);
+    
+})
 
 const port = 3000;
 app.listen(port,()=>{
